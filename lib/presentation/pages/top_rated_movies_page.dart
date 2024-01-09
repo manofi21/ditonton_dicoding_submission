@@ -10,8 +10,7 @@ class TopRatedListPage extends StatefulWidget {
   final ItemType itemType;
   static const routeName = '/top-rated-movie';
 
-  const TopRatedListPage({Key? key, required this.itemType})
-      : super(key: key);
+  const TopRatedListPage({super.key, required this.itemType});
 
   @override
   State<TopRatedListPage> createState() => _TopRatedListPageState();

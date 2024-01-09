@@ -11,7 +11,7 @@ class PopularListPage extends StatefulWidget {
   final ItemType itemType;
   static const routeName = '/popular-list';
 
-  const PopularListPage({Key? key, required this.itemType}) : super(key: key);
+  const PopularListPage({super.key, required this.itemType});
 
   @override
   State<PopularListPage> createState() => _PopularListPageState();

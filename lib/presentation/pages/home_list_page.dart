@@ -12,7 +12,7 @@ class HomeListPage extends StatefulWidget {
   final ItemType itemType;
   static const routeName = '/home-list';
 
-  const HomeListPage({Key? key, required this.itemType}) : super(key: key);
+  const HomeListPage({super.key, required this.itemType});
 
   @override
   State<HomeListPage> createState() => _HomeListPageState();
