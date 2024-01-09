@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ditonton_dicoding_submission/data/models/movie_detail_model.dart';
 import 'package:ditonton_dicoding_submission/data/models/movie_model.dart';
@@ -16,7 +17,8 @@ abstract class MovieRemoteDataSource {
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
-  static const apiKey = 'apiKey=2174d146bb9c0eab47529b2e77d6b526';
+  static const token =
+      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzODExMTQzNTI2NWI4ZWFkNDU2MzU3NzdmYmI2YjhlYyIsInN1YiI6IjY1OGMwOTdmZTE4ZTNmN2FhOGY5YzkxOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.rBGn6WtFAG-ZNiCEEf6igC4QcPA6TWnrlgHU17JlV68';
   static const baseUrl = 'https://api.themoviedb.org/3';
 
   final http.Client client;
@@ -25,8 +27,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
   @override
   Future<List<MovieModel>> getNowPlayingMovies() async {
-    final response =
-        await client.get(Uri.parse('$baseUrl/movie/now_playing?$apiKey'));
+    final response = await client.get(
+      Uri.parse('$baseUrl/movie/now_playing'),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
 
     if (response.statusCode == 200) {
       return MovieResponse.fromJson(json.decode(response.body)).movieList;
@@ -37,8 +41,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
   @override
   Future<MovieDetailResponse> getMovieDetail(int id) async {
-    final response =
-        await client.get(Uri.parse('$baseUrl/movie/$id?$apiKey'));
+    final response = await client.get(
+      Uri.parse('$baseUrl/movie/$id'),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
 
     if (response.statusCode == 200) {
       return MovieDetailResponse.fromJson(json.decode(response.body));
@@ -49,8 +55,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
   @override
   Future<List<MovieModel>> getMovieRecommendations(int id) async {
-    final response = await client
-        .get(Uri.parse('$baseUrl/movie/$id/recommendations?$apiKey'));
+    final response = await client.get(
+      Uri.parse('$baseUrl/movie/$id/recommendations'),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
 
     if (response.statusCode == 200) {
       return MovieResponse.fromJson(json.decode(response.body)).movieList;
@@ -61,8 +69,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
   @override
   Future<List<MovieModel>> getPopularMovies() async {
-    final response =
-        await client.get(Uri.parse('$baseUrl/movie/popular?$apiKey'));
+    final response = await client.get(
+      Uri.parse('$baseUrl/movie/popular'),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
 
     if (response.statusCode == 200) {
       return MovieResponse.fromJson(json.decode(response.body)).movieList;
@@ -73,8 +83,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
   @override
   Future<List<MovieModel>> getTopRatedMovies() async {
-    final response =
-        await client.get(Uri.parse('$baseUrl/movie/top_rated?$apiKey'));
+    final response = await client.get(
+      Uri.parse('$baseUrl/movie/top_rated'),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
 
     if (response.statusCode == 200) {
       return MovieResponse.fromJson(json.decode(response.body)).movieList;
@@ -85,8 +97,10 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 
   @override
   Future<List<MovieModel>> searchMovies(String query) async {
-    final response = await client
-        .get(Uri.parse('$baseUrl/search/movie?$apiKey&query=$query'));
+    final response = await client.get(
+      Uri.parse('$baseUrl/search/movie?query=$query'),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
 
     if (response.statusCode == 200) {
       return MovieResponse.fromJson(json.decode(response.body)).movieList;
