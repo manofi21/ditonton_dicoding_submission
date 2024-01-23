@@ -2,6 +2,10 @@ import 'package:ditonton_dicoding_submission/presentation/bloc/base_detail/base_
 import 'package:ditonton_dicoding_submission/presentation/bloc/base_home_list/base_home_list_bloc_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+typedef MovieHomeListState = BaseHomeListBlocState<Movie>;
+
+typedef TvSeriesHomeListState = BaseHomeListBlocState<TvSeries>;
+
 class BaseHomeListBlocCubit<T extends BaseItemEntity>
     extends Cubit<BaseHomeListBlocState<T>> {
   BaseHomeListBlocCubit() : super(BaseHomeListBlocState<T>());
