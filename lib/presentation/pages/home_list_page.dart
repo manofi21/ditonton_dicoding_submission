@@ -1,9 +1,10 @@
 import 'package:ditonton_dicoding_submission/common/state_enum.dart';
-import 'package:ditonton_dicoding_submission/presentation/provider/home_movie_list_notifier.dart';
-import 'package:ditonton_dicoding_submission/presentation/provider/home_tv_series_list_notifier.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/base_home_list/base_home_list_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_home_list/movie_home_list_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_home_list/tv_series_home_list_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/base_item_entity.dart';
 
@@ -23,9 +24,9 @@ class _HomeListPageState extends State<HomeListPage> {
   void initState() {
     super.initState();
     Future.microtask(() => widget.itemType == ItemType.movie
-        ? Provider.of<HomeMovieListNotifier>(context, listen: false)
+        ? BlocProvider.of<HomeMovieListBlocCubit>(context, listen: false)
             .fetchNowPlayingList()
-        : Provider.of<HomeTvSeriesListNotifier>(context, listen: false)
+        : BlocProvider.of<HomeTvSeriesListBlocCubit>(context, listen: false)
             .fetchOnAirTvSeries());
   }
 
@@ -40,46 +41,46 @@ class _HomeListPageState extends State<HomeListPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: widget.itemType == ItemType.movie
-            ? Consumer<HomeMovieListNotifier>(
-                builder: (context, data, child) {
-                  if (data.homelistState == RequestState.loading) {
+            ? BlocBuilder<HomeMovieListBlocCubit, MovieHomeListState>(
+                builder: (context, state) {
+                  if (state.homeListState == RequestState.loading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (data.homelistState == RequestState.loaded) {
+                  } else if (state.homeListState == RequestState.loaded) {
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        final movie = data.homeList[index];
+                        final movie = state.homeListValue[index];
                         return MovieCard(movie);
                       },
-                      itemCount: data.homeList.length,
+                      itemCount: state.homeListValue.length,
                     );
                   } else {
                     return Center(
                       key: const Key('error_message'),
-                      child: Text(data.message),
+                      child: Text(state.homeListMessageError),
                     );
                   }
                 },
               )
-            : Consumer<HomeTvSeriesListNotifier>(
-                builder: (context, data, child) {
-                  if (data.homelistState == RequestState.loading) {
+            : BlocBuilder<HomeTvSeriesListBlocCubit, TvSeriesHomeListState>(
+                builder: (context, state) {
+                  if (state.homeListState == RequestState.loading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (data.homelistState == RequestState.loaded) {
+                  } else if (state.homeListState == RequestState.loaded) {
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        final tvSeries = data.homeList[index];
+                        final tvSeries = state.homeListValue[index];
                         return MovieCard(tvSeries);
                       },
-                      itemCount: data.homeList.length,
+                      itemCount: state.homeListValue.length,
                     );
                   } else {
                     return Center(
                       key: const Key('error_message'),
-                      child: Text(data.message),
+                      child: Text(state.homeListMessageError),
                     );
                   }
                 },

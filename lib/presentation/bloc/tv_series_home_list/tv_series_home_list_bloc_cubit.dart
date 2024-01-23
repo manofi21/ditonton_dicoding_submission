@@ -7,7 +7,7 @@ class HomeTvSeriesListBlocCubit extends BaseHomeListBlocCubit<TvSeries> {
   final GetOnAirTvSeries getOnAirTvSeries;
   HomeTvSeriesListBlocCubit(this.getOnAirTvSeries);
 
-  Future<void> fetchNowPlayingList() async {
+  Future<void> fetchOnAirTvSeries() async {
     await getCurrenlyOnAirOrNowPlaying(
       getOnAirTvSeries.execute(),
     );
