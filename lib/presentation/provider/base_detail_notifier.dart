@@ -4,6 +4,7 @@ import 'package:ditonton_dicoding_submission/common/state_enum.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+@Deprecated("Migrated to Bloc by using BaseDetailBlocCubit instead")
 class BaseDetailNotifier<BaseItemDetail, BaseItemEntitiy> extends ChangeNotifier {
   static const watchlistAddSuccessMessage = 'Added to Watchlist';
   static const watchlistRemoveSuccessMessage = 'Removed from Watchlist';

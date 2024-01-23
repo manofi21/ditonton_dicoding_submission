@@ -12,7 +12,7 @@ import '../../json_reader.dart';
 import '../../helpers/test_helper.mocks.dart';
 
 void main() {
-  const apiKey = 'apiKey=2174d146bb9c0eab47529b2e77d6b526';
+  const apiKey = 'apiKey=38111435265b8ead45635777fbb6b8ec';
   const baseUrl = 'https://api.themoviedb.org/3';
 
   late MovieRemoteDataSourceImpl dataSource;

@@ -22,19 +22,19 @@ class TvSeriesDetailCubit
       required this.removeWatchlist});
 
   Future<void> fetchTvSeriesDetail(int id) async {
-    await Future.wait([
-      fetchMovieOrTvSeriesDetail(
+    await Future.microtask(() async {
+      await fetchMovieOrTvSeriesDetail(
         detailResult: getTvSeriesDetail.execute(id),
         recommendationResult: getTvSeriesRecommendations.execute(id),
-      ),
-      loadWatchlistStatus(getWatchListStatus.execute(id))
-    ]);
+      );
+      await loadWatchlistStatus(getWatchListStatus.execute(id));
+    });
   }
 
   Future<void> addWatchlistTvSeries(TvSeriesDetail tvSeries) async {
     await addWatchlist(
       saveWatchlist: saveWatchlist.execute(tvSeries),
-      loadStatus: loadWatchlistStatus(getWatchListStatus.execute(tvSeries.id)),
+      loadStatus: getWatchListStatus.execute(tvSeries.id),
     );
   }
 

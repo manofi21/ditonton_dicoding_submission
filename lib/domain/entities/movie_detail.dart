@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:ditonton_dicoding_submission/domain/entities/base_item_detail.dart';
 import 'package:ditonton_dicoding_submission/domain/entities/base_item_entity.dart';
 import 'package:ditonton_dicoding_submission/domain/entities/genre.dart';
@@ -17,15 +18,14 @@ class MovieDetail extends BaseItemDetail {
     required this.movieVoteAverage,
     required this.voteCount,
   }) : super(
-          title: movieTitle,
-          overview: movieOverview,
-          posterPath: moviePosterPath,
-          id: movieId,
-          genres: movieGenres,
-          runtime: movieRuntime,
-          voteAverage: movieVoteAverage,
-          category: ItemType.movie
-        );
+            title: movieTitle,
+            overview: movieOverview,
+            posterPath: moviePosterPath,
+            id: movieId,
+            genres: movieGenres,
+            runtime: movieRuntime,
+            voteAverage: movieVoteAverage,
+            category: ItemType.movie);
 
   final bool adult;
   final String? backdropPath;
@@ -56,4 +56,9 @@ class MovieDetail extends BaseItemDetail {
         voteCount,
         category,
       ];
+
+  @override
+  String toString() {
+    return 'MovieDetail(adult: $adult, backdropPath: $backdropPath, movieGenres: $movieGenres, movieId: $movieId, originalTitle: $originalTitle, movieOverview: $movieOverview, moviePosterPath: $moviePosterPath, releaseDate: $releaseDate, movieRuntime: $movieRuntime, movieTitle: $movieTitle, movieVoteAverage: $movieVoteAverage, voteCount: $voteCount)';
+  }
 }

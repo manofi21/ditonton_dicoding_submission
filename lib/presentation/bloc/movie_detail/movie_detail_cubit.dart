@@ -1,4 +1,3 @@
-
 import 'package:ditonton_dicoding_submission/domain/usecases/get_movie_detail.dart';
 import 'package:ditonton_dicoding_submission/domain/usecases/get_movie_recommendations.dart';
 import 'package:ditonton_dicoding_submission/domain/usecases/get_watchlist_movie_status.dart';
@@ -22,19 +21,19 @@ class MovieDetailCubit extends BaseDetailBlocCubit<MovieDetail, Movie> {
       required this.removeWatchlist});
 
   Future<void> fetchMovieDetail(int id) async {
-    await Future.wait([
-      fetchMovieOrTvSeriesDetail(
+    await Future.microtask(() async {
+      await fetchMovieOrTvSeriesDetail(
         detailResult: getMovieDetail.execute(id),
         recommendationResult: getMovieRecommendations.execute(id),
-      ),
-      loadWatchlistStatus(getWatchListStatus.execute(id))
-    ]);
+      );
+      await loadWatchlistStatus(getWatchListStatus.execute(id));
+    });
   }
 
   Future<void> addWatchlistMovies(MovieDetail movie) async {
     await addWatchlist(
-      saveWatchlist: saveWatchlist.execute(movie),
-      loadStatus: loadWatchlistStatus(getWatchListStatus.execute(movie.id)),
+      saveWatchlist:  saveWatchlist.execute(movie),
+      loadStatus: getWatchListStatus.execute(movie.id),
     );
   }
 

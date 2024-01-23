@@ -1,6 +1,7 @@
 import 'package:ditonton_dicoding_submission/common/constants.dart';
 import 'package:ditonton_dicoding_submission/common/utils.dart';
 import 'package:ditonton_dicoding_submission/domain/entities/base_item_entity.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_detail/tv_series_detail_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/about_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/home_list_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/home_page.dart';
@@ -25,8 +26,11 @@ import 'package:ditonton_dicoding_submission/presentation/provider/watchlist_mov
 import 'package:ditonton_dicoding_submission/presentation/provider/watchlist_tv_series_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:ditonton_dicoding_submission/injection.dart' as di;
+
+import 'presentation/bloc/movie_detail/movie_detail_cubit.dart';
 
 void main() {
   di.init();
@@ -83,66 +87,76 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<HomeTvSeriesListNotifier>(),
         ),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData.dark().copyWith(
-          colorScheme: kColorScheme,
-          primaryColor: kRichBlack,
-          scaffoldBackgroundColor: kRichBlack,
-          textTheme: kTextTheme,
-        ),
-        home: const HomePage(),
-        navigatorObservers: [routeObserver],
-        onGenerateRoute: (RouteSettings settings) {
-          switch (settings.name) {
-            case '/home':
-              return MaterialPageRoute(builder: (_) => const HomePage());
-            case PopularListPage.routeName:
-              final itemType = settings.arguments as ItemType;
-              return CupertinoPageRoute(
-                builder: (_) => PopularListPage(
-                  itemType: itemType,
-                ),
-                settings: settings,
-              );
-            case HomeListPage.routeName:
-              final itemType = settings.arguments as ItemType;
-              return CupertinoPageRoute(
-                builder: (_) => HomeListPage(
-                  itemType: itemType,
-                ),
-                settings: settings,
-              );
-            case TopRatedListPage.routeName:
-              final itemType = settings.arguments as ItemType;
-              return CupertinoPageRoute(
-                builder: (_) => TopRatedListPage(
-                  itemType: itemType,
-                ),
-                settings: settings,
-              );
-            case DetailPage.routeName:
-              final item = settings.arguments as BaseItemEntity;
-              return MaterialPageRoute(
-                builder: (_) => DetailPage(baseItemEntity: item),
-                settings: settings,
-              );
-            case SearchPage.routeName:
-              return CupertinoPageRoute(builder: (_) => const SearchPage());
-            case WatchlistPage.routeName:
-              return MaterialPageRoute(builder: (_) => const WatchlistPage());
-            case AboutPage.routeName:
-              return MaterialPageRoute(builder: (_) => const AboutPage());
-            default:
-              return MaterialPageRoute(builder: (_) {
-                return const Scaffold(
-                  body: Center(
-                    child: Text('Page not found :('),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => di.locator<MovieDetailCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.locator<TvSeriesDetailCubit>(),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData.dark().copyWith(
+            colorScheme: kColorScheme,
+            primaryColor: kRichBlack,
+            scaffoldBackgroundColor: kRichBlack,
+            textTheme: kTextTheme,
+          ),
+          home: const HomePage(),
+          navigatorObservers: [routeObserver],
+          onGenerateRoute: (RouteSettings settings) {
+            switch (settings.name) {
+              case '/home':
+                return MaterialPageRoute(builder: (_) => const HomePage());
+              case PopularListPage.routeName:
+                final itemType = settings.arguments as ItemType;
+                return CupertinoPageRoute(
+                  builder: (_) => PopularListPage(
+                    itemType: itemType,
                   ),
+                  settings: settings,
                 );
-              });
-          }
-        },
+              case HomeListPage.routeName:
+                final itemType = settings.arguments as ItemType;
+                return CupertinoPageRoute(
+                  builder: (_) => HomeListPage(
+                    itemType: itemType,
+                  ),
+                  settings: settings,
+                );
+              case TopRatedListPage.routeName:
+                final itemType = settings.arguments as ItemType;
+                return CupertinoPageRoute(
+                  builder: (_) => TopRatedListPage(
+                    itemType: itemType,
+                  ),
+                  settings: settings,
+                );
+              case DetailPage.routeName:
+                final item = settings.arguments as BaseItemEntity;
+                return MaterialPageRoute(
+                  builder: (_) => DetailPage(baseItemEntity: item),
+                  settings: settings,
+                );
+              case SearchPage.routeName:
+                return CupertinoPageRoute(builder: (_) => const SearchPage());
+              case WatchlistPage.routeName:
+                return MaterialPageRoute(builder: (_) => const WatchlistPage());
+              case AboutPage.routeName:
+                return MaterialPageRoute(builder: (_) => const AboutPage());
+              default:
+                return MaterialPageRoute(builder: (_) {
+                  return const Scaffold(
+                    body: Center(
+                      child: Text('Page not found :('),
+                    ),
+                  );
+                });
+            }
+          },
+        ),
       ),
     );
   }

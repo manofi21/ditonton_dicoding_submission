@@ -1,14 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'base_detail_bloc.dart';
 
+typedef MovieDetailState = BaseDetailBlocState<MovieDetail, Movie>;
 
-typedef MovieDetailState = BaseDetailBlocState<MovieDetail, Movie>?;
+typedef TvSeriesDetailState = BaseDetailBlocState<TvSeriesDetail, TvSeries>;
 
-typedef TvSeriesDetailState = BaseDetailBlocState<TvSeriesDetail, TvSeries>?;
-
-abstract class BaseDetailBlocCubit<T extends BaseItemDetail, Y extends BaseItemEntity>
-    extends Cubit<BaseDetailBlocState<T, Y>?> {
-  BaseDetailBlocCubit() : super(null);
+abstract class BaseDetailBlocCubit<T extends BaseItemDetail,
+    Y extends BaseItemEntity> extends Cubit<BaseDetailBlocState<T, Y>> {
+  BaseDetailBlocCubit() : super(BaseDetailBlocState<T, Y>());
 
   static const watchlistAddSuccessMessage = 'Added to Watchlist';
   static const watchlistRemoveSuccessMessage = 'Removed from Watchlist';
@@ -21,8 +20,16 @@ abstract class BaseDetailBlocCubit<T extends BaseItemDetail, Y extends BaseItemE
     emit(stateLoading);
 
     late BaseDetailBlocState<T, Y> updatedState;
-    final varDetailResult = await detailResult;
-    final varRecommendationResult = await recommendationResult;
+
+    final loadGettedData = await Future.wait([
+      detailResult,
+      recommendationResult,
+    ]);
+
+    final varDetailResult = loadGettedData[0] as Either<Failure, T>;
+    final varRecommendationResult = loadGettedData[1] as Either<Failure, List<Y>>;
+
+
 
     varDetailResult.fold(
       (failure) {
@@ -64,12 +71,12 @@ abstract class BaseDetailBlocCubit<T extends BaseItemDetail, Y extends BaseItemE
 
     await result.fold(
       (failure) async {
-        currentState = currentState?.copyWith(
+        currentState = currentState.copyWith(
           addedToWatchlistMessage: failure.message,
         );
       },
       (successMessage) async {
-        currentState = currentState?.copyWith(
+        currentState = currentState.copyWith(
           addedToWatchlistMessage: successMessage,
         );
       },
@@ -82,37 +89,35 @@ abstract class BaseDetailBlocCubit<T extends BaseItemDetail, Y extends BaseItemE
 
   Future<void> addWatchlist(
       {required Future<Either<Failure, String>> saveWatchlist,
-      required Future<void> loadStatus}) async {
-    final result = await saveWatchlist;
-    var currentState = state;
+      required Future<bool> loadStatus}) async {
+    var currentState = state.copyWith(isAddToWatchlistLoading: true);
 
-    await result.fold(
-      (failure) async {
-        currentState = currentState?.copyWith(
-          addedToWatchlistMessage: failure.message,
-        );
+    final result = await saveWatchlist;
+    emit(currentState);
+
+    String getMessage = result.fold<String>(
+      (failure) {
+        return failure.message;
       },
-      (successMessage) async {
-        currentState = currentState?.copyWith(
-          addedToWatchlistMessage: successMessage,
-        );
+      (successMessage) {
+        return successMessage;
       },
     );
 
+    currentState = state.copyWith(
+      addedToWatchlistMessage: getMessage,
+    );
     emit(currentState);
 
-    await loadStatus;
+    final getStatus = await loadStatus;
+    currentState = currentState.copyWith(isAddedToWatchlist: getStatus);
+    emit(currentState);
   }
 
   Future<void> loadWatchlistStatus(Future<bool> getWatchListStatus) async {
     final getStatus = await getWatchListStatus;
     var currentState = state;
+    currentState = currentState.copyWith(isAddedToWatchlist: getStatus);
     emit(currentState);
-
-    currentState = currentState?.copyWith(
-      isAddedToWatchlist: getStatus
-    );
-    emit(currentState);
-    
   }
 }

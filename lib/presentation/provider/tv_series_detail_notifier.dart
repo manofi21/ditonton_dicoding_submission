@@ -7,6 +7,7 @@ import 'package:ditonton_dicoding_submission/domain/usecases/remove_watchlist_tv
 import 'package:ditonton_dicoding_submission/domain/usecases/save_watchlist_tv_series.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/base_detail_notifier.dart';
 
+@Deprecated("Migrated to Bloc by Using TvSeriesDetailCubit instead")
 class TvSeriesDetailNotifier
     extends BaseDetailNotifier<TvSeriesDetail, TvSeries> {
   static const watchlistAddSuccessMessage = 'Added to Watchlist';

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class TabBarHomePage extends StatefulWidget {
   final List<Widget> widgets;
   const TabBarHomePage({
-    Key? key,
+    super.key,
     required this.widgets,
-  }) : super(key: key);
+  });
 
   @override
   State<TabBarHomePage> createState() => _TabBarHomePageState();

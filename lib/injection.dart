@@ -27,6 +27,8 @@ import 'package:ditonton_dicoding_submission/domain/usecases/save_watchlist_movi
 import 'package:ditonton_dicoding_submission/domain/usecases/save_watchlist_tv_series.dart';
 import 'package:ditonton_dicoding_submission/domain/usecases/search_movies.dart';
 import 'package:ditonton_dicoding_submission/domain/usecases/search_tv_series.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_detail/movie_detail_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_detail/tv_series_detail_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_movie_list_notifier.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_tv_series_list_notifier.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/movie_detail_notifier.dart';
@@ -71,6 +73,27 @@ void init() {
       removeWatchlist: locator(),
     ),
   );
+
+  locator.registerFactory(
+    () => MovieDetailCubit(
+      getMovieDetail: locator(),
+      getMovieRecommendations: locator(),
+      getWatchListStatus: locator(),
+      saveWatchlist: locator(),
+      removeWatchlist: locator(),
+    ),
+  );
+  
+  locator.registerFactory(
+    () => TvSeriesDetailCubit(
+      getTvSeriesDetail: locator(),
+      getTvSeriesRecommendations: locator(),
+      getWatchListStatus: locator(),
+      saveWatchlist: locator(),
+      removeWatchlist: locator(),
+    ),
+  );
+
   locator.registerFactory(
     () => TvSeriesDetailNotifier(
       getTvSeriesDetail: locator(),

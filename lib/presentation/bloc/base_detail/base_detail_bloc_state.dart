@@ -12,6 +12,7 @@ class BaseDetailBlocState<T extends BaseItemDetail, Y extends BaseItemEntity>
 
   final bool isAddedToWatchlist;
   final String addedToWatchlistMessage;
+  final bool isAddToWatchlistLoading;
 
   const BaseDetailBlocState({
     this.baseItemDetail,
@@ -22,6 +23,7 @@ class BaseDetailBlocState<T extends BaseItemDetail, Y extends BaseItemEntity>
     this.recommendationMessage = '',
     this.isAddedToWatchlist = false,
     this.addedToWatchlistMessage = '',
+    this.isAddToWatchlistLoading = false,
   });
 
   factory BaseDetailBlocState.loadingState() {
@@ -54,6 +56,7 @@ class BaseDetailBlocState<T extends BaseItemDetail, Y extends BaseItemEntity>
     String? recommendationMessage,
     bool? isAddedToWatchlist,
     String? addedToWatchlistMessage,
+    bool? isAddToWatchlistLoading,
   }) {
     return BaseDetailBlocState<T, Y>(
       baseItemDetail: baseItemDetail ?? this.baseItemDetail,
@@ -66,6 +69,7 @@ class BaseDetailBlocState<T extends BaseItemDetail, Y extends BaseItemEntity>
       isAddedToWatchlist: isAddedToWatchlist ?? this.isAddedToWatchlist,
       addedToWatchlistMessage:
           addedToWatchlistMessage ?? this.addedToWatchlistMessage,
+          isAddToWatchlistLoading: isAddToWatchlistLoading ?? this.isAddToWatchlistLoading
     );
   }
 
@@ -78,6 +82,7 @@ class BaseDetailBlocState<T extends BaseItemDetail, Y extends BaseItemEntity>
         recommendationState,
         recommendationMessage,
         isAddedToWatchlist,
-        addedToWatchlistMessage
+        addedToWatchlistMessage,
+        isAddToWatchlistLoading,
       ];
 }

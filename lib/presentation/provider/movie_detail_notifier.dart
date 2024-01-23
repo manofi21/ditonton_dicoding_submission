@@ -7,6 +7,7 @@ import 'package:ditonton_dicoding_submission/domain/usecases/remove_watchlist_mo
 import 'package:ditonton_dicoding_submission/domain/usecases/save_watchlist_movie.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/base_detail_notifier.dart';
 
+@Deprecated("Migrated to Bloc by Using MovieDetailCubit instead")
 class MovieDetailNotifier extends BaseDetailNotifier<MovieDetail, Movie> {
   static const watchlistAddSuccessMessage = 'Added to Watchlist';
   static const watchlistRemoveSuccessMessage = 'Removed from Watchlist';
