@@ -1,7 +1,9 @@
 import 'package:ditonton_dicoding_submission/common/constants.dart';
 import 'package:ditonton_dicoding_submission/common/utils.dart';
 import 'package:ditonton_dicoding_submission/domain/entities/base_item_entity.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_home_list/movie_home_list_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_detail/tv_series_detail_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_home_list/tv_series_home_list_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/about_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/home_list_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/home_page.dart';
@@ -94,6 +96,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => di.locator<TvSeriesDetailCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.locator<HomeMovieListBlocCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.locator<HomeTvSeriesListBlocCubit>(),
           ),
         ],
         child: MaterialApp(
