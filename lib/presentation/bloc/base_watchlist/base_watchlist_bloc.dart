@@ -1,4 +1,4 @@
-library base_popular_bloc;
+library base_watchlist_bloc;
 
 export 'package:ditonton_dicoding_submission/common/state_enum.dart';
 export 'package:ditonton_dicoding_submission/domain/entities/base_item_entity.dart';

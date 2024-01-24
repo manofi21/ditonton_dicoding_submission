@@ -31,10 +31,12 @@ import 'package:ditonton_dicoding_submission/presentation/bloc/movie_detail/movi
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_home_list/movie_home_list_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_popular/movie_popular_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_search/movie_search_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_watchlist/movie_watchlist_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_detail/tv_series_detail_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_home_list/tv_series_home_list_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_popular/tv_series_popular_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_search/tv_series_search_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_watchlist/tv_series_watchlist_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_movie_list_notifier.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_tv_series_list_notifier.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/movie_detail_notifier.dart';
@@ -166,6 +168,16 @@ void init() {
   );
   locator.registerFactory(
     () => WatchlistTvSeriesNotifier(
+      getWatchlistTvSeries: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => MovieWatchlistBlocCubit(
+      getWatchlistMovies: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => TvSeriesWatchlistBlocCubit(
       getWatchlistTvSeries: locator(),
     ),
   );
