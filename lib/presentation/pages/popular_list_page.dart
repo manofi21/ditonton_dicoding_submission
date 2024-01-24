@@ -1,9 +1,10 @@
 import 'package:ditonton_dicoding_submission/common/state_enum.dart';
-import 'package:ditonton_dicoding_submission/presentation/provider/popular_movies_notifier.dart';
-import 'package:ditonton_dicoding_submission/presentation/provider/popular_tv_series_notifier.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/base_popular/base_popular_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_popular/movie_popular_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_popular/tv_series_popular_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/base_item_entity.dart';
 
@@ -22,10 +23,10 @@ class _PopularListPageState extends State<PopularListPage> {
   void initState() {
     super.initState();
     Future.microtask(() => widget.itemType == ItemType.movie
-        ? Provider.of<PopularMoviesNotifier>(context, listen: false)
-            .fetchPopularMovies()
-        : Provider.of<PopularTvSeriesNotifier>(context, listen: false)
-            .fetchPopularTvSeries());
+        ? BlocProvider.of<MoviePopularBlocCubit>(context, listen: false)
+            .fetchMoviePopular()
+        : BlocProvider.of<TvSeriesPopularBlocCubit>(context, listen: false)
+            .fetchTvSeriesPopular());
   }
 
   @override
@@ -39,46 +40,46 @@ class _PopularListPageState extends State<PopularListPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: widget.itemType == ItemType.movie
-            ? Consumer<PopularMoviesNotifier>(
-                builder: (context, data, child) {
-                  if (data.state == RequestState.loading) {
+            ? BlocBuilder<MoviePopularBlocCubit, MoviePopularListState>(
+                builder: (context, state) {
+                  if (state.popularListState == RequestState.loading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (data.state == RequestState.loaded) {
+                  } else if (state.popularListState == RequestState.loaded) {
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        final movie = data.popularList[index];
+                        final movie = state.popularListValue[index];
                         return MovieCard(movie);
                       },
-                      itemCount: data.popularList.length,
+                      itemCount: state.popularListValue.length,
                     );
                   } else {
                     return Center(
                       key: const Key('error_message'),
-                      child: Text(data.message),
+                      child: Text(state.popularListMessageError),
                     );
                   }
                 },
               )
-            : Consumer<PopularTvSeriesNotifier>(
-                builder: (context, data, child) {
-                  if (data.state == RequestState.loading) {
+            : BlocBuilder<TvSeriesPopularBlocCubit, TvSeriesPopularListState>(
+                builder: (context, state) {
+                  if (state.popularListState == RequestState.loading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (data.state == RequestState.loaded) {
+                  } else if (state.popularListState == RequestState.loaded) {
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        final movie = data.popularList[index];
+                        final movie = state.popularListValue[index];
                         return MovieCard(movie);
                       },
-                      itemCount: data.popularList.length,
+                      itemCount: state.popularListValue.length,
                     );
                   } else {
                     return Center(
                       key: const Key('error_message'),
-                      child: Text(data.message),
+                      child: Text(state.popularListMessageError),
                     );
                   }
                 },

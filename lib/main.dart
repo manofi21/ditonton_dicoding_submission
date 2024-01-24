@@ -2,9 +2,11 @@ import 'package:ditonton_dicoding_submission/common/constants.dart';
 import 'package:ditonton_dicoding_submission/common/utils.dart';
 import 'package:ditonton_dicoding_submission/domain/entities/base_item_entity.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_home_list/movie_home_list_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_popular/movie_popular_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_search/movie_search_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_detail/tv_series_detail_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_home_list/tv_series_home_list_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_popular/tv_series_popular_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_search/tv_series_search_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/about_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/home_list_page.dart';
@@ -110,6 +112,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => di.locator<TvSeriesSearchBlocCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.locator<MoviePopularBlocCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.locator<TvSeriesPopularBlocCubit>(),
           ),
         ],
         child: MaterialApp(
