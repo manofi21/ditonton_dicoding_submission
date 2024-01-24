@@ -4,11 +4,13 @@ import 'package:ditonton_dicoding_submission/domain/entities/base_item_entity.da
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_home_list/movie_home_list_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_popular/movie_popular_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_search/movie_search_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_top_rated/movie_top_rated_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_watchlist/movie_watchlist_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_detail/tv_series_detail_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_home_list/tv_series_home_list_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_popular/tv_series_popular_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_search/tv_series_search_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_top_rated/tv_series_top_rated_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_watchlist/tv_series_watchlist_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/about_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/home_list_page.dart';
@@ -16,7 +18,7 @@ import 'package:ditonton_dicoding_submission/presentation/pages/home_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/detail_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/popular_list_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/search_page.dart';
-import 'package:ditonton_dicoding_submission/presentation/pages/top_rated_movies_page.dart';
+import 'package:ditonton_dicoding_submission/presentation/pages/top_rated_list_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/pages/watchlist_page.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_movie_list_notifier.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_tv_series_list_notifier.dart';
@@ -126,6 +128,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => di.locator<TvSeriesWatchlistBlocCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.locator<MovieTopRatedBlocCubit>(),
+          ),
+          BlocProvider(
+            create: (_) => di.locator<TvSeriesTopRatedBlocCubit>(),
           ),
         ],
         child: MaterialApp(
