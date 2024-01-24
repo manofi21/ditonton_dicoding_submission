@@ -30,15 +30,15 @@ class _DetailPageState extends State<DetailPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      // if (widget.baseItemEntity.type == ItemType.movie) {
-      //   context
-      //       .read<MovieDetailCubit>()
-      //       .fetchMovieDetail(widget.baseItemEntity.id);
-      // } else {
-      //   context
-      //       .read<TvSeriesDetailCubit>()
-      //       .fetchTvSeriesDetail(widget.baseItemEntity.id);
-      // }
+      if (widget.baseItemEntity.type == ItemType.movie) {
+        context
+            .read<MovieDetailCubit>()
+            .fetchMovieDetail(widget.baseItemEntity.id);
+      } else {
+        context
+            .read<TvSeriesDetailCubit>()
+            .fetchTvSeriesDetail(widget.baseItemEntity.id);
+      }
     });
   }
 
@@ -47,12 +47,7 @@ class _DetailPageState extends State<DetailPage> {
     // return Container();
     return Scaffold(
       body: widget.baseItemEntity.type == ItemType.movie
-          ? BlocConsumer<MovieDetailCubit, MovieDetailState>(
-              listener: (context, state) {
-                context
-                    .read<MovieDetailCubit>()
-                    .fetchMovieDetail(widget.baseItemEntity.id);
-              },
+          ? BlocBuilder<MovieDetailCubit, MovieDetailState>(
               builder: (context, state) {
                 if (state.baseItemState == RequestState.loading) {
                   return const Center(
@@ -160,48 +155,46 @@ class DetailContent extends StatelessWidget {
                                   final movieDetailNotifier =
                                       context.read<MovieDetailCubit>();
 
-                                  print(isAddedWatchlist);
-
-                                  //   if (!isAddedWatchlist) {
-                                  await movieDetailNotifier
-                                      .addWatchlistMovies(detail);
-                                  //   } else {
-                                  //     await movieDetailNotifier
-                                  //         .removeFromWatchlistMovies(detail);
-                                  //   }
-                                  //   message = movieDetailNotifier
-                                  //       .state.addedToWatchlistMessage;
+                                  if (!isAddedWatchlist) {
+                                    await movieDetailNotifier
+                                        .addWatchlistMovies(detail);
+                                  } else {
+                                    await movieDetailNotifier
+                                        .removeFromWatchlistMovies(detail);
+                                  }
+                                  message = movieDetailNotifier
+                                      .state.addedToWatchlistMessage;
                                 }
 
-                                // if (detail is TvSeriesDetail) {
-                                //   final tvSeriesDetailNotifier =
-                                //       // ignore: use_build_context_synchronously
-                                //       context.read<TvSeriesDetailCubit>();
-                                //   if (!isAddedWatchlist) {
-                                //     await tvSeriesDetailNotifier
-                                //         .addWatchlistTvSeries(detail);
-                                //   } else {
-                                //     await tvSeriesDetailNotifier
-                                //         .removeFromWatchlistTvSeries(detail);
-                                //   }
-                                //   message = tvSeriesDetailNotifier
-                                //       .state.addedToWatchlistMessage;
-                                // }
+                                if (detail is TvSeriesDetail) {
+                                  final tvSeriesDetailNotifier =
+                                      // ignore: use_build_context_synchronously
+                                      context.read<TvSeriesDetailCubit>();
+                                  if (!isAddedWatchlist) {
+                                    await tvSeriesDetailNotifier
+                                        .addWatchlistTvSeries(detail);
+                                  } else {
+                                    await tvSeriesDetailNotifier
+                                        .removeFromWatchlistTvSeries(detail);
+                                  }
+                                  message = tvSeriesDetailNotifier
+                                      .state.addedToWatchlistMessage;
+                                }
 
-                                // if (isSuccessOrRemoved(message)) {
-                                //   // ignore: use_build_context_synchronously
-                                //   ScaffoldMessenger.of(context).showSnackBar(
-                                //       SnackBar(content: Text(message)));
-                                // } else {
-                                //   // ignore: use_build_context_synchronously
-                                //   showDialog(
-                                //       context: context,
-                                //       builder: (context) {
-                                //         return AlertDialog(
-                                //           content: Text(message),
-                                //         );
-                                //       });
-                                // }
+                                if (isSuccessOrRemoved(message)) {
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(message)));
+                                } else {
+                                  // ignore: use_build_context_synchronously
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: Text(message),
+                                        );
+                                      });
+                                }
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,

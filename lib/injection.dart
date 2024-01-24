@@ -29,8 +29,10 @@ import 'package:ditonton_dicoding_submission/domain/usecases/search_movies.dart'
 import 'package:ditonton_dicoding_submission/domain/usecases/search_tv_series.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_detail/movie_detail_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/movie_home_list/movie_home_list_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_search/movie_search_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_detail/tv_series_detail_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_home_list/tv_series_home_list_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_search/tv_series_search_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_movie_list_notifier.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/home_tv_series_list_notifier.dart';
 import 'package:ditonton_dicoding_submission/presentation/provider/movie_detail_notifier.dart';
@@ -112,6 +114,16 @@ void init() {
   );
   locator.registerFactory(
     () => TvSeriesSearchNotifier(
+      searchTvSeries: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => MovieSearchBlocCubit(
+      searchMovies: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => TvSeriesSearchBlocCubit(
       searchTvSeries: locator(),
     ),
   );

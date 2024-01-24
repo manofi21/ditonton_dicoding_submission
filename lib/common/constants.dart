@@ -22,7 +22,7 @@ const TextStyle kBodyText =
     TextStyle(fontFamily: 'Poppins', fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: .25);
 
 // text theme
-final kTextTheme = TextTheme(
+final kTextTheme = const TextTheme(
   headline5: kHeading5,
   headline6: kHeading6,
   subtitle1: kSubtitle,

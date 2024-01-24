@@ -1,11 +1,12 @@
 import 'package:ditonton_dicoding_submission/common/constants.dart';
 import 'package:ditonton_dicoding_submission/common/state_enum.dart';
-import 'package:ditonton_dicoding_submission/presentation/provider/movie_search_notifier.dart';
-import 'package:ditonton_dicoding_submission/presentation/provider/tv_series_search_notifier.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/base_search/base_search_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/movie_search/movie_search_bloc_cubit.dart';
+import 'package:ditonton_dicoding_submission/presentation/bloc/tv_series_search/tv_series_search_bloc_cubit.dart';
 import 'package:ditonton_dicoding_submission/presentation/widgets/movie_card_list.dart';
 import 'package:ditonton_dicoding_submission/presentation/widgets/tab_bar_home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchPage extends StatelessWidget {
   static const routeName = '/search';
@@ -26,9 +27,9 @@ class SearchPage extends StatelessWidget {
             TextField(
               onSubmitted: (query) {
                 Future.microtask(() {
-                  Provider.of<MovieSearchNotifier>(context, listen: false)
+                  BlocProvider.of<MovieSearchBlocCubit>(context, listen: false)
                       .fetchMovieSearch(query);
-                  Provider.of<TvSeriesSearchNotifier>(context, listen: false)
+                  BlocProvider.of<TvSeriesSearchBlocCubit>(context, listen: false)
                       .fetchTvSeriesSearch(query);
                 });
               },
@@ -40,7 +41,7 @@ class SearchPage extends StatelessWidget {
               textInputAction: TextInputAction.search,
             ),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               'Search Result',
               style: kHeading6,
             ),
@@ -48,19 +49,19 @@ class SearchPage extends StatelessWidget {
             Expanded(
               child: TabBarHomePage(
                 widgets: [
-                  Consumer<MovieSearchNotifier>(
-                    builder: (context, data, child) {
-                      if (data.state == RequestState.loading) {
+                  BlocBuilder<MovieSearchBlocCubit, MovieSearchListState>(
+                    builder: (context, state) {
+                      if (state.searchListState == RequestState.loading) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (data.state == RequestState.loaded) {
-                        final result = data.searchResult;
+                      } else if (state.searchListState == RequestState.loaded) {
+                        final result = state.searchListValue;
                         return Expanded(
                           child: ListView.builder(
                             padding: const EdgeInsets.all(8),
                             itemBuilder: (context, index) {
-                              final movie = data.searchResult[index];
+                              final movie = result[index];
                               return MovieCard(movie);
                             },
                             itemCount: result.length,
@@ -71,19 +72,19 @@ class SearchPage extends StatelessWidget {
                       }
                     },
                   ),
-                  Consumer<TvSeriesSearchNotifier>(
-                    builder: (context, data, child) {
-                      if (data.state == RequestState.loading) {
+                  BlocBuilder<TvSeriesSearchBlocCubit, TvSeriesSearchListState>(
+                    builder: (context, state) {
+                      if (state.searchListState == RequestState.loading) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (data.state == RequestState.loaded) {
-                        final result = data.searchResult;
+                      } else if (state.searchListState == RequestState.loaded) {
+                        final result = state.searchListValue;
                         return Expanded(
                           child: ListView.builder(
                             padding: const EdgeInsets.all(8),
                             itemBuilder: (context, index) {
-                              final movie = data.searchResult[index];
+                              final movie = result[index];
                               return MovieCard(movie);
                             },
                             itemCount: result.length,
